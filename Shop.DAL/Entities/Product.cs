@@ -12,10 +12,11 @@ public class Product
     [Required]
     public string Name { get; set; }
     [Required]
-    public decimal Price { get; set; }
-
+    public decimal Price { get; set; }  
+    public string Genre { get; set; }
     public string Description { get; set; }
     public Guid PhotoID { get; set; }
+    public Guid? authorID { get; set; }
     public ICollection<Bucket> Buckets { get; set; }
     //public Bucket? bucket { get; set; }
 

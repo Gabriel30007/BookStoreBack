@@ -1,7 +1,6 @@
-﻿using Azure.Core;
+﻿
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 using ShopAPI.DTO;
 using ShopAPI.Helpers;
 using ShopAPI.Services;
@@ -20,7 +19,7 @@ public class AuthenticationController : ControllerBase
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly NotificationService _notificationService;
     private const string RedirectUrl = "http://localhost:4200/home";
-    private const string GoogleScope = "https://www.googleapis.com/auth/userinfo.profile";
+    private const string GoogleScope = "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email";
     private const string PkceSessionKey = "codeVerifier";
     public AuthenticationController(IUserManager userManager, IHttpContextAccessor httpContextAccessor, NotificationService notificationService)
     {
@@ -56,7 +55,10 @@ public class AuthenticationController : ControllerBase
             var codeVerifier = HttpContext.Session.GetString(PkceSessionKey);
             
             var tokenResult = await GoogleAuthService.ExchangeCodeOnTokenAsync(dto.Code, headerValues, RedirectUrl);
+            dynamic te = await GoogleAuthService.GetUserEmail(tokenResult.AccessToken);
 
+
+            
             //var myChannelId = await YoutubeService.GetMyChannelIdAsync(tokenResult.AccessToken);
 
 
@@ -66,7 +68,7 @@ public class AuthenticationController : ControllerBase
             // (саме стільки можна використовувати AccessToken, поки його термін придатності не спливе).
 
             // І оновлюємо Токен Доступу за допомогою Refresh-токена.
-            var refreshedTokenResult = await GoogleAuthService.RefreshTokenAsync(tokenResult.RefreshToken);
+            //var refreshedTokenResult = await GoogleAuthService.RefreshTokenAsync(tokenResult.RefreshToken);
 
             return Ok();
         }

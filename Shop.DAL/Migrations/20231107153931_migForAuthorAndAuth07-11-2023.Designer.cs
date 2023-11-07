@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.DAL.AppDbContexts;
 
@@ -11,9 +12,11 @@ using Shop.DAL.AppDbContexts;
 namespace Shop.DAL.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20231107153931_migForAuthorAndAuth07-11-2023")]
+    partial class migForAuthorAndAuth07112023
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace Shop.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Shop.DAL.Entities.Author", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Author");
-                });
 
             modelBuilder.Entity("Shop.DAL.Entities.Bucket", b =>
                 {
@@ -93,8 +81,6 @@ namespace Shop.DAL.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("authorID");
-
                     b.ToTable("Product");
                 });
 
@@ -139,18 +125,6 @@ namespace Shop.DAL.Migrations
                     b.HasOne("Shop.DAL.Entities.User", null)
                         .WithMany("Buckets")
                         .HasForeignKey("userID");
-                });
-
-            modelBuilder.Entity("Shop.DAL.Entities.Product", b =>
-                {
-                    b.HasOne("Shop.DAL.Entities.Author", null)
-                        .WithMany("Products")
-                        .HasForeignKey("authorID");
-                });
-
-            modelBuilder.Entity("Shop.DAL.Entities.Author", b =>
-                {
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Shop.DAL.Entities.Product", b =>

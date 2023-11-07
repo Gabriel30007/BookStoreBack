@@ -12,6 +12,7 @@ public class GoogleAuthService
 
     private const string OAuthServerEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
     private const string TokenServerEndpoint = "https://oauth2.googleapis.com/token";
+    private const string ProfileServerEndpoint = "https://www.googleapis.com/oauth2/v2/userinfo";
 
     public GoogleAuthService(IConfiguration configuration)
     {
@@ -67,6 +68,17 @@ public class GoogleAuthService
         };
 
         var tokenResult = await HttpClientHelper.SendPostRequest<TokenResult>(TokenServerEndpoint, refreshParams);
+
+        return tokenResult;
+    }
+
+    public static async Task<string> GetUserEmail(string accessToken)
+    {
+        string ClientId = ConfigurationHelper.config.GetSection("GoogleSecrets:ClientId").Value;
+        string ClientSecret = ConfigurationHelper.config.GetSection("GoogleSecrets:ClientSecret").Value;
+        
+        var tokenResult = await HttpClientHelper.SendGetRequest<dynamic>(ProfileServerEndpoint, null,accessToken);
+
 
         return tokenResult;
     }

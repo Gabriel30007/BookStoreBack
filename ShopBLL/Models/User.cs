@@ -9,6 +9,7 @@ public class User
     public string Email { get; set; }
     public string Password { get; set; }
     public string? Roles { get; set; }
+    public string? RefreshToken { get; set; }
 
     public User(){}
     public User(string name, string password)

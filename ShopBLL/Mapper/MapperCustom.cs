@@ -20,7 +20,7 @@ namespace ShopBLL.Mapper
         }
         public static ProductBLl GetProductBllFromDll(ProductDal productDal)
         {
-            return new ProductBLl(productDal.ID, productDal.CreatedOn, productDal.Name, productDal.Price,productDal.Description, GetImgForProduct(productDal.PhotoID));
+            return new ProductBLl(productDal.ID, productDal.CreatedOn, productDal.Name, productDal.Price,productDal.Description, GetImgForProduct(productDal.PhotoID), productDal.Genre, productDal.authorID);
         }
 
         public static async Task< List<ProductBLl>> GetListProductsBllFromDll(List<ProductDal> productDal)
