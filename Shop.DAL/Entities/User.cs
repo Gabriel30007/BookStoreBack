@@ -15,12 +15,12 @@ public class User
     [MaxLength(250)]
     public string Email { get; set; }
 
-    public string Password { get; set; }
+    public string? Password { get; set; }
 
     [Required]
     public string Roles { get; set; }
     
-    public string Refresh_Token { get; set; }
+    public string? Refresh_Token { get; set; }
 
     public ICollection<Bucket> Buckets { get; set; }
     //public Bucket? bucket { get; set; }

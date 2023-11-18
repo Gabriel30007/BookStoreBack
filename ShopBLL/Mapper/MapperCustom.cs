@@ -16,7 +16,7 @@ namespace ShopBLL.Mapper
         }
         public static  UserDal GetUserDllFromBll(UserBLl userBll)
         {
-            return new UserDal(userBll.Id?? Guid.NewGuid(), userBll.Name, userBll.Email, userBll.Password, userBll.Roles);
+            return new UserDal(userBll.Id, userBll.Name, userBll.Email, userBll.Password, userBll.Roles);
         }
         public static ProductBLl GetProductBllFromDll(ProductDal productDal)
         {

@@ -45,7 +45,7 @@ public class AuthenticationController : ControllerBase
         // PCKE.
     }
     [HttpPost]
-    public async Task<IActionResult> Code(OAuthDTO dto)
+    public async Task<User> Code(OAuthDTO dto)
     {
         try
         {
@@ -55,22 +55,23 @@ public class AuthenticationController : ControllerBase
             var codeVerifier = HttpContext.Session.GetString(PkceSessionKey);
             
             var tokenResult = await GoogleAuthService.ExchangeCodeOnTokenAsync(dto.Code, headerValues, RedirectUrl);
-            dynamic te = await GoogleAuthService.GetUserEmail(tokenResult.AccessToken);
+            UserInfoDTO userInfo = await GoogleAuthService.GetUserEmail(tokenResult.AccessToken);
 
+            User userDB = await _userManager.CheckIsEmailRegistered(userInfo.Email);
 
-            
-            //var myChannelId = await YoutubeService.GetMyChannelIdAsync(tokenResult.AccessToken);
+            if(userDB != null)
+            {
+                await _userManager.RefreshTokenInDatabase(userDB.Id, tokenResult.RefreshToken);
+            }
+            else
+            {
+                userDB = await _userManager.SaveUserByOAuthAsync(new User(Guid.NewGuid(), userInfo.Name, userInfo.Email, tokenResult.RefreshToken));
+            }
 
-
-            //await YoutubeService.UpdateChannelDescriptionAsync(tokenResult.AccessToken, myChannelId, newDescription);
-
-            // Почекаємо 3600 секунд
-            // (саме стільки можна використовувати AccessToken, поки його термін придатності не спливе).
-
-            // І оновлюємо Токен Доступу за допомогою Refresh-токена.
+            // оновлюємо Токен Доступу за допомогою Refresh-токена.
             //var refreshedTokenResult = await GoogleAuthService.RefreshTokenAsync(tokenResult.RefreshToken);
 
-            return Ok();
+            return userDB;
         }
         catch(Exception ex)
         {

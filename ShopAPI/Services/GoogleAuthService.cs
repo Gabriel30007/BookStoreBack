@@ -72,14 +72,13 @@ public class GoogleAuthService
         return tokenResult;
     }
 
-    public static async Task<string> GetUserEmail(string accessToken)
+    public static async Task<UserInfoDTO> GetUserEmail(string accessToken)
     {
         string ClientId = ConfigurationHelper.config.GetSection("GoogleSecrets:ClientId").Value;
         string ClientSecret = ConfigurationHelper.config.GetSection("GoogleSecrets:ClientSecret").Value;
         
-        var tokenResult = await HttpClientHelper.SendGetRequest<dynamic>(ProfileServerEndpoint, null,accessToken);
+        var userInfo = await HttpClientHelper.SendGetRequest<UserInfoDTO>(ProfileServerEndpoint, null,accessToken);
 
-
-        return tokenResult;
+        return userInfo;
     }
 }

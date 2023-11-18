@@ -70,6 +70,69 @@ public class UserManager : IUserManager
         }
     }
 
+    public async Task<UserBLl> SaveUserByOAuthAsync(UserBLl user)
+    {
+        try
+        {
+            if (!String.IsNullOrEmpty(user.Name) != null || !String.IsNullOrEmpty(user.Email) != null|| !String.IsNullOrEmpty(user.RefreshToken))
+            {
+                UserDal insertUser = new UserDal
+                {
+                    ID = Guid.NewGuid(),
+                    Name = user.Name,
+                    Email = user.Email,
+                    Roles = Roles.ROLE_USER.ToString(),
+                    Refresh_Token = user.RefreshToken
+                };
+                await _db.User.AddAsync(insertUser);
+                _db.SaveChanges();
+                return MapperCustom.GetUserBllFromDll(insertUser);
+            }
+            else
+            {
+                throw new Exception("User fields are required");
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    public async Task<UserBLl> CheckIsEmailRegistered(string email)
+    {
+        try
+        {
+            UserDal user = await _db.User.Where(x => x.Email == email).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                return MapperCustom.GetUserBllFromDll(user);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    public async Task RefreshTokenInDatabase(Guid userID, string refreshToken)
+    {
+        try
+        {
+            UserDal user = await _db.User.FindAsync(userID);
+            user.Refresh_Token = refreshToken;
+            await _db.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     public async Task<List<UserBLl>> GetAllUserAsync()
     {
         return await MapperCustom.GetListUsersBllFromDll(_db.User.ToList());
