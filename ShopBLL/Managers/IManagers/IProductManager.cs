@@ -11,4 +11,6 @@ public interface IProductManager
 {
     Task<List<Product>> GetAllProductAsync();
     Task<Product> GetSingleProductAsync(Guid ID);
+    Task<dynamic> GetProductExtendDataAsync(Dictionary<string, string> filters, int page, int itemsOnPage);
+    Task<int> GetCountOfProductsAsync(Dictionary<string, string> filters);
 }

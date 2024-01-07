@@ -1,6 +1,7 @@
 ﻿using ShopBLL.Models;
 using Microsoft.AspNetCore.Mvc;
 using ShopBLL.Managers.IManagers;
+using ShopAPI.DTO;
 
 namespace ShopAPI.Controllers;
 
@@ -24,5 +25,17 @@ public class ProductController : ControllerBase
     public async Task<Product> GetSingleProduct(Guid ID)
     {
         return await _productManager.GetSingleProductAsync(ID);
+    }
+
+    [HttpPost]
+    public async Task<dynamic> GetProductExtendData(ProductFilterContainerDto filters)
+    {
+        return await _productManager.GetProductExtendDataAsync(filters.Filters, filters.Page, filters.ItemsOnPage);
+    }
+
+    [HttpPost]
+    public async Task<int> GetCountOfProducts(ProductFilterContainerDto filters)
+    {
+        return await _productManager.GetCountOfProductsAsync(filters.Filters);
     }
 }
