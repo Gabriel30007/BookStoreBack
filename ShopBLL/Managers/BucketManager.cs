@@ -14,7 +14,8 @@ namespace ShopBLL.Managers
         
         public async Task SaveOrderAsync(Guid userID, Guid productID)
         { 
-            await _db.Bucket.AddAsync(new Bucket(Guid.NewGuid(), DateTime.Now,userID, productID));
+            decimal price = _db.Product.FindAsync(productID).Result.Price;
+            await _db.Bucket.AddAsync(new Bucket(Guid.NewGuid(), DateTime.Now,userID, productID, price));
             _db.SaveChanges();
         }
 

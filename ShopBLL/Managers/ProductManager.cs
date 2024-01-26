@@ -94,5 +94,41 @@ public class ProductManager : IProductManager
         }
         return count;
     }
+
+    public async Task<dynamic> GetSingleExtendProductAsync(Guid id)
+    {
+        try
+        {
+           var data = await _db.Product.Join(
+           _db.Author,
+           p => p.authorID,
+           a => a.Id,
+           (p, a) => new
+           {
+               ID = p.ID,
+               CreatedOn = p.CreatedOn,
+               Name = p.Name,
+               Price = p.Price,
+               Description = p.Description,
+               PhotoID = MapperCustom.GetImgForProduct(p.PhotoID),
+               Genre = p.Genre,
+               AuthorID = p.authorID,
+               AuthorName = a.Name
+
+           }).Where(x => x.ID == id)
+           .FirstOrDefaultAsync();
+
+            if (data == null)
+            {
+                throw new Exception("Продукт не знайдено");
+            }
+            return data;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+       
+    }
     
 }

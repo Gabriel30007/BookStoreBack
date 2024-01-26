@@ -38,4 +38,10 @@ public class ProductController : ControllerBase
     {
         return await _productManager.GetCountOfProductsAsync(filters.Filters);
     }
+
+    [HttpGet]
+    public async Task<dynamic> GetSingleExtendProduct(Guid ID)
+    {
+        return await _productManager.GetSingleExtendProductAsync(ID);
+    }
 }
