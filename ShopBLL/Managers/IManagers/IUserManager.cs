@@ -10,7 +10,7 @@ public interface IUserManager
     Task SignUpAsync(User user);
     Task<User> GetUserByIdAsync(Guid id);
     Task SaveUserAsync(User user);
-    Task DeleteUserAsync(string id);
+    Task DeleteUserAsync(Guid id);
     Task<User> SaveUserByOAuthAsync(User user);
     Task<User> CheckIsEmailRegistered(string email);
     Task RefreshTokenInDatabase(Guid userID, string refreshToken);

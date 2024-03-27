@@ -6,6 +6,7 @@ using ShopAPI.Helpers;
 using ShopAPI.Services;
 using ShopBLL.Managers.IManagers;
 using ShopBLL.Models;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

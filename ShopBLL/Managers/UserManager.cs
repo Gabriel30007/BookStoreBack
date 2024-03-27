@@ -151,13 +151,16 @@ public class UserManager : IUserManager
         await _db.SaveChangesAsync();
     }
 
-    public async Task DeleteUserAsync(string id)
+    public async Task DeleteUserAsync(Guid id)
     {
         try
         {
-            UserDal user = new UserDal(Guid.Parse(id), "", "", "", "");
-            _db.User.Remove(user);
-            await _db.SaveChangesAsync();
+            UserDal user = await _db.User.FindAsync(id);
+            if(user != null)
+            {
+                _db.User.Remove(user);
+                await _db.SaveChangesAsync();
+            }          
         }
         catch (Exception ex)
         {

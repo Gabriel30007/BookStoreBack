@@ -14,6 +14,7 @@ namespace ShopBLL
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IProductManager, ProductManager>();
             services.AddScoped<IBucketManager, BucketManager>();
+            services.AddScoped<IBookSearchAI, BookSearchAI>();
         }
     }
 }

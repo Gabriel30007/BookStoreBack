@@ -59,7 +59,7 @@ public class UserController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> DeleteUser(string id)
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
         try
         {

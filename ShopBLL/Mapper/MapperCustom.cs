@@ -20,7 +20,7 @@ namespace ShopBLL.Mapper
         }
         public static ProductBLl GetProductBllFromDll(ProductDal productDal)
         {
-            return new ProductBLl(productDal.ID, productDal.CreatedOn, productDal.Name, productDal.Price,productDal.Description, GetImgForProduct(productDal.PhotoID), productDal.Genre, productDal.authorID);
+            return new ProductBLl(productDal.ID, productDal.CreatedOn, productDal.Name, productDal.Price,productDal.Description, GetImgForProduct(productDal.PhotoID), productDal.genreID, productDal.authorID);
         }
 
         public static async Task< List<ProductBLl>> GetListProductsBllFromDll(List<ProductDal> productDal)
@@ -29,7 +29,7 @@ namespace ShopBLL.Mapper
             foreach(ProductDal x in productDal)
             {
                 arr.Add(GetProductBllFromDll(x));
-            }
+            } 
             return arr;
         }
 
@@ -57,6 +57,10 @@ namespace ShopBLL.Mapper
             }
            
         }
-        
+
+        public static ProductDal GetProductDALFromBLL(ProductBLl productDal)
+        {
+            return new ProductDal(productDal.Id, productDal.CreatedOn, productDal.Name, productDal.Price, productDal.Description, Guid.Parse(productDal.PhotoID), productDal.GenreID, productDal.AuthorID);
+        }
     }
 }

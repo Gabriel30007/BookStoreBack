@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ShopBLL.Managers.IManagers
 {
-    public interface IBucketManager
+    public interface IBookSearchAI
     {
-        Task SaveOrderAsync(Guid userID, Guid productID);
-        Task<dynamic> GetBucketInformationAsync(Guid userID);
+        Task FindBookAsync(string promt, string apikey);
     }
 }
